@@ -1,0 +1,26 @@
+{
+  "name": "aws_samples",
+  "version": "1.0.0",
+  "description": "AWS SDK examples.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sergaros/aws.git"
+  },
+  "keywords": [
+    "aws",
+    "examples"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sergaros/aws/issues"
+  },
+  "homepage": "https://github.com/Sergaros/aws#readme",
+  "dependencies": {
+    "aws-sdk": "^2.709.0"
+  }
+}
