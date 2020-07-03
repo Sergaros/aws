@@ -1,0 +1,41 @@
+row - item
+column - attribute
+
+Capacity Units
+    RCU (Read Capacity Unit)    - 1RCU 4kb/sec
+    WCU (Write Capacity Unit)   - 1WCU 1kb/sec
+
+Partitions
+    Partitions manged internally by DynamoDB.
+    A table can have multiple partitions.
+    Number of table partitions depend on its size and provisioned capacity.
+    1 partition = 10GB of data.
+    1 partition = 1000 WCUs or 3000 RCUs
+
+    Example:
+        provisioned capacity: 500 RCUs and 500 WCUs
+        P = 500/3000 + 500/1000;
+        p = 0.67 ~ 1 partition
+
+        provisioned capacity: 1000 RCUs and 1000 WCUs
+        P = 1000/3000 + 1000/1000;
+        p = 1.33 ~ 2 partitions
+        
+// https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SQLtoNoSQL.Indexes.html
+Indexes
+    Mandatory Primary Key - either simple or composite.
+    Simple Primary Key - only partition or hash key.
+    Composite Primary Key - Partition Key + Sort or Range key.
+
+Local Secondary Indexes
+    You can create 5 local secondary indexes.
+    Use same partition key but diferent sort key.
+    Must be created when you create your table.
+    
+Global Secondary Index
+    You can create 5 global secondary indexes.
+    Use diferent partition and sort keys.
+    Can be created any time.
+    Not suported strongly consistent read, only eventualy.
+    Can set RCUs and WCUs separatly from capacity uits of the base table.
+
