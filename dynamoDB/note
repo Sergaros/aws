@@ -39,3 +39,100 @@ Global Secondary Index
     Not suported strongly consistent read, only eventualy.
     Can set RCUs and WCUs separatly from capacity uits of the base table.
 
+CLI
+    // https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html
+    
+    List tables - 
+        aws dynamodb list-tables
+
+    Get table meta-data
+        aws dynamodb describe-table --table-name <table-name>
+
+    Create table
+        aws dynamodb create-table --table-name testTable --attribute-definitions AttributeName=user_id,AttributeType=S AttributeName=timestamp,AttributeType=N --key-schema AttributeName=user_id,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+
+    Delete table
+        aws dynamodb delete-table --table-name testTable
+
+    Put/Replace item in the table
+        item.json
+            {
+                "user_id":{"S":"1234abcd"},
+                "timestamp":{"N":"1525013000"},
+                "content":{"S":"Hello World!"},
+                "title":{"S":"My Title"}
+            }
+
+        aws dynamodb put-item --table-name <table-name> --item file://item.json
+
+    Update attributes
+        key.json
+            {
+                "user_id":{"S":"1234abcd"},
+                "timestamp":{"N":"1525013000"}
+            }
+
+        attribute-names.json
+            {
+                "#t":"title"
+            }
+
+        attribute-values.json
+            {
+                ":t":{"S":"My updated title"}
+            }
+
+        aws dynamodb update-item --table-name testTable --key file://key.json /
+        --update-expression "SET #t = :t" /
+        expression-attribute-names file://attribute-names.json /
+        expression-attribute-values file://attribute-values.json
+
+    Update attributes
+        key.json
+            {
+                "user_id":{"S":"1234abcd"},
+                "timestamp":{"N":"1525013000"}
+            }
+
+        aws dynamodb delete-item --table-name testTable --key file://key.json
+
+    Write and delete multiple items
+        // items.json
+        {
+            "testTable": [
+                {
+                    "PutRequest": {
+                        "Item": {
+                             "user_id":{"S":"1234abcd"},
+                            "timestamp":{"N":"1525013000"},
+                            "content":{"S":"Hello World!"},
+                            "title":{"S":"My Title"}
+                        }
+                    }
+                },
+                                {
+                    "PutRequest": {
+                        "Item": {
+                            "user_id":{"S":"2234abcd"},
+                            "timestamp":{"N":"1525013001"},
+                            "content":{"S":"Some Content"},
+                            "title":{"S":"My Title1"}
+                        }
+                    }
+                },
+                {
+                    "DeleteRequest": {
+                        "Key": {
+                            "user_id":{"S":"2wsxcder"},
+                            "timestamp":{"N":"156013001"},
+                        }
+                    }
+                }
+            ]
+        }
+
+        aws dynamodb batch-write-item --request-tems file://items.json
+
+
+
+    
